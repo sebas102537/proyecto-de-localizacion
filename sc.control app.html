@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>sc.control app</title>
+<h4>Diseñado por Sebastian Castro</h4>
+<style>
+:root{--bg:#f3f6fb;--sf:#fff;--tx:#0e1a2e;--mu:#62708a;--ln:#e1e7f0;--ac:#2f5bff;--ok:#12a36b;--nv:#e8890c;--co:#2f8fff;--bd:#d92f4a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0a1220;--sf:#131e33;--tx:#e8eefb;--mu:#8a98b5;--ln:#233350;--ac:#6f8cff;--ok:#2ed39a;--nv:#ffb04a;--co:#5aa9ff;--bd:#ff5d78;color-scheme:dark}}
+:root[data-theme=dark]{--bg:#0a1220;--sf:#131e33;--tx:#e8eefb;--mu:#8a98b5;--ln:#233350;--ac:#6f8cff;--ok:#2ed39a;--nv:#ffb04a;--co:#5aa9ff;--bd:#ff5d78;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+.w{max-width:980px;margin:0 auto;padding:18px 16px 40px}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.brand{display:flex;gap:12px;align-items:center;background:none;border:0;padding:0;text-align:left}.brand svg{width:46px;height:46px;flex:none}
+.brand b{font-size:21px;letter-spacing:-.4px;display:block;line-height:1.1}.brand small{color:var(--mu);font-size:12.5px}
+button{font:inherit;color:inherit;cursor:pointer}
+#th{width:40px;height:40px;border-radius:12px;border:1px solid var(--ln);background:var(--sf);font-size:17px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:5px;background:var(--sf);border:1px solid var(--ln);border-radius:16px;margin-bottom:16px}
+.tabs button{border:0;background:none;padding:12px;border-radius:12px;font-weight:600;color:var(--mu)}
+.tabs button.on{background:var(--ac);color:#fff;box-shadow:0 6px 16px -6px var(--ac)}
+.tabs i{font-style:normal;opacity:.8;margin-left:6px;font-weight:500}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.stat{background:var(--sf);border:1px solid var(--ln);border-radius:16px;padding:12px 14px;border-left:4px solid var(--c)}
+.stat b{font-size:28px;letter-spacing:-1px;display:block;line-height:1.1}.stat span{color:var(--mu);font-size:12.5px}
+@media(max-width:560px){.stats{grid-template-columns:1fr 1fr}}
+.sb{position:relative;margin-bottom:12px}
+#q{width:100%;padding:15px 16px;border-radius:16px;border:1.5px solid var(--ln);background:var(--sf);color:var(--tx);font:inherit;font-size:16px;outline:0}
+#q:focus{border-color:var(--ac);box-shadow:0 0 0 4px color-mix(in srgb,var(--ac) 18%,transparent)}
+.sg{position:absolute;left:0;right:0;top:calc(100% + 6px);background:var(--sf);border:1px solid var(--ln);border-radius:16px;box-shadow:0 18px 40px -12px rgba(10,20,50,.35);z-index:5;overflow:hidden}
+.sg button{display:flex;width:100%;gap:10px;align-items:center;text-align:left;border:0;background:none;padding:11px 14px;border-bottom:1px solid var(--ln)}
+.sg button:hover,.sg button:focus{background:var(--bg)}.sg small{color:var(--mu);display:block}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
+.chip{border:1px solid var(--ln);background:var(--sf);border-radius:99px;padding:6px 12px;font-size:13px;color:var(--mu)}
+.chip.on{background:var(--tx);color:var(--bg);border-color:var(--tx)}
+.dmg{background:var(--sf);border:1px solid var(--ln);border-radius:16px;padding:12px 14px;margin-bottom:14px}
+.dmg h3{margin:0 0 8px;font-size:14px}
+.bar{display:grid;grid-template-columns:130px 1fr 28px;gap:8px;align-items:center;width:100%;border:0;background:none;padding:3px 0;text-align:left;font-size:13px}
+.bar i{height:8px;border-radius:9px;background:var(--bd);opacity:.85;display:block}.bar.on{font-weight:700}
+.cnt{color:var(--mu);font-size:13px;margin:6px 2px}
+.card{display:block;width:100%;text-align:left;background:var(--sf);border:1px solid var(--ln);border-left:4px solid var(--c);border-radius:16px;padding:13px 15px;margin-bottom:9px}
+.card:hover{border-color:var(--ac)}
+.card h4{margin:0;font-size:15.5px}.card p{margin:3px 0 0;color:var(--mu);font-size:13.5px}
+.top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.id{font-size:12px;font-weight:700;color:var(--ac);background:color-mix(in srgb,var(--ac) 12%,transparent);padding:2px 8px;border-radius:8px;white-space:nowrap}
+.tg{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.tg span{font-size:12px;padding:2px 9px;border-radius:99px;background:color-mix(in srgb,var(--bd) 13%,transparent);color:var(--bd)}
+.tg span.t{background:color-mix(in srgb,var(--nv) 15%,transparent);color:var(--nv)}
+.st{font-size:12px;font-weight:700;color:var(--c)}
+dialog{border:0;border-radius:22px;padding:22px;width:min(520px,92vw);background:var(--sf);color:var(--tx);box-shadow:0 30px 80px -20px rgba(0,0,0,.5)}
+dialog::backdrop{background:rgba(5,10,25,.55)}
+dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:14px 0}dt{color:var(--mu)}dd{margin:0}
+.x{margin-top:8px;width:100%;padding:12px;border:0;border-radius:12px;background:var(--ac);color:#fff;font-weight:600}
+.emp{text-align:center;color:var(--mu);padding:30px}
+</style></head><body><div class="w">
+<header><button class="brand" id="lg" type="button" aria-label="Volver al inicio">
+<svg viewBox="0 0 48 48" aria-label="Logo sc.control"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2f5bff"/><stop offset="1" stop-color="#16c5a8"/></linearGradient></defs><rect width="48" height="48" rx="14" fill="url(#g)"/><path d="M12 33a12 12 0 1 1 24 0" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/><path d="M24 33l7-10" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/><circle cx="24" cy="33" r="3.2" fill="#fff"/><path d="M14 40h20" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".6"/></svg>
+<span><b>sc.control</b><small>Viva Envigado · Inspección contra incendios</small></span></button>
+<button id="th" aria-label="Cambiar tema">◐</button></header>
+<nav class="tabs"><button data-c="r" class="on">Risers<i id="cr"></i></button><button data-c="g">Gabinetes<i id="cg"></i></button></nav>
+<section class="stats" id="sts"></section>
+<div class="sb"><input id="q" type="search" autocomplete="off" placeholder="Buscar por número, sistema, piso o zona…"><div id="sg" class="sg" hidden></div></div>
+<div class="chips" id="fl"></div>
+<div class="dmg" id="lv"></div>
+<div class="dmg" id="dm"></div>
+<div class="cnt" id="ct"></div>
+<main id="ls"></main>
+<dialog id="dl"></dialog></div>
+<script>
+const R=`Salida 12 · Piso 2A|Salida 12|||1|s|Falta placa de información y señalización. Su red entra a piso 2A.
+Salida 12 · Piso 3|Salida 12|AH||0||Buen estado, señalización y elementos completos.
+Salida 12 · Piso 3 #2|Salida 12|AP||0||Buen estado, señalización y elementos completos.
+Salida 12 · Piso 4 Cancha sintética|Salida 12|||1|s|Montaje horizontal con elementos completos. Se realizó su drenaje y quedó conectado correctamente. Pendiente: señalización.
+Salida 12 · Piso 1A|Salida 12|U||0||Completo, en buen estado y señalizado.
+Salida 12 · Sótano 1|Salida 12|M||1|mp|Manómetro descalibrado marca 225 psi, presión muy elevada.
+Salida 2 · Piso 1A|Salida 2|AO||2|s|Alimenta piso 1A zona IKEA, pasillo Metro; junto a salida de emergencia de baños. Señalización corregida.
+Salida 2 · Piso 1|Salida 2|Q||1|m|Alimenta piso 1 zona IKEA, pasillo Metro. Manómetro aguas arriba para cambio.
+Salida 2 · Piso 3 Baños Happy City|Salida 2|||1|s|Alimenta baños y pasillo de Happy City, cerca de los carros chocones. Perfecto estado y etiquetado. Pendiente: falta señalización.
+Salida 10 · Piso 1|Salida 10|||0||Sin detalles reportados.
+Salida 10 · Piso 1A|Salida 10|||1|msv|Pendiente: detalle y cambio de señalización y manómetros; cambio y ajuste de válvulas de bola ¼″.
+Salida 10 · Piso 2A|Salida 10|||0||Sin detalles reportados.
+Salida 10 · Piso 3|Salida 10|||1|sv|Ajuste y lubricación de válvulas de bola ¼″. Pendiente instalar señalización.
+Parqueadero motos 1 · Zona amarilla empleados|Parqueadero motos|P||2|s|Cambio de señal de mariposa y ficha técnica por descuelgue.
+Sótano 4 · Zona 1 amarilla (#4)|Zona amarilla IKEA|||0||Centro de control completo y en perfecto estado.
+Sótano 3 · Zona 1 amarilla (#3)|Zona amarilla IKEA|||0||Centro de control completo y en perfecto estado.
+Sótano 2 · Zona 1 amarilla (#2)|Zona amarilla IKEA|||0||Centro de control completo y en perfecto estado.
+Nivel 0 · Zona 1 amarilla (#1)|Zona amarilla IKEA|||1|v|Válvula de bola 1″ con fuga leve (goteo); cambio. Resto en buen estado. Oriental piso 1.
+Sótano 4 · Zona 2 (rampa eléctrica)|Rampas eléctricas · Torre sur|||0||Perfecto estado con todos sus componentes.
+Sótano 3 · Zona 2|Rampas eléctricas · Torre sur|||0||Perfecto estado; se limpió y organizó junto con su 4 vías.
+Sótano 2 · Zona 2|Rampas eléctricas · Torre sur|||0||Buenas condiciones. Último al ingresar desde sótano 4, zona sur IKEA.
+Salida 11 · Piso 1A|Torre corporativo parqueadero|AK||1|m|Manómetro para cambio por deterioro.
+Salida 11 · Piso 2|Torre corporativo parqueadero|AC||1|m|Detalle en manómetros; para cambio.
+Salida 11 · Piso 2A|Torre corporativo parqueadero|AL||1|mp|Dos manómetros marcan presión errónea; para cambio.
+Salida 11 · Piso 3|Torre corporativo parqueadero|AI||1|m|Un manómetro deteriorado, pendiente de cambio.
+Salida 11 · Piso 3A|Torre corporativo parqueadero|AM||1|mp|Presión aguas abajo muy baja con 200 psi aguas arriba; luego marcó 170 psi. Manómetros para cambio por error de lectura.
+Salida 10 · Piso 5B|Torre corporativo parqueadero|5B||0||Perfecto estado. Sistema de rociadores 5B.
+Salida 2 · Sótano 1|Torre corporativo parqueadero|I||0||Zona de parqueadero de motos; perfecto estado.
+Salida 2 · Sótano 2|Parqueadero motos|B||1|v|Perfecto estado, pero su válvula de alivio está cerrada y conectada al drenaje.
+Control piso 1 · Zona S1|Centros de control 4″|||1|s|Detalle de señalización. Alimenta sótano 1 desde Home Center hasta ascensores, cerca de taquilla de pago.
+Control sótano 2 · Zona S1|Centros de control 4″|||1|s|Detalle de señalización.
+Control sótano 1 · Zona S1|Centros de control 4″|||1|sv|Señalización nula; cambio de válvula de alivio. Alimenta tramo de 6″ junto a ventana Home Center y baja a la red de 6″ de sótano 2.
+Controlador de tomas de bomberos|Centros de control 4″|||1|vo|Sin cheques, sensores de flujo ni válvula monitoreada. Surte tomas de bomberos (una en sótano 2, cerca de entrada de taxis).
+Salida 2 · Sótano 1|Sótano 1|J||0||Salida de emergencia del cafetín de empleados; controla oficina de administración y medio anillo de sótano 1. Perfecto estado.
+Salida 11 · Sótano 1|Sótano 1|O||1|mvo|Válvula mariposa sin monitoreo y manómetro sin tapón de glicerina.
+Control descargue · Zona S2|Descargue|||1|s|Falta señalización y tablas de especificaciones; resto completo y en buen estado.
+Piso 3 evacuación sótano 2 (#1)|Elevador de carga|AD||1|s|Perfecto estado; pendiente colgar tabla de especificaciones.
+Piso 3 evacuación sótano 2 #2|Elevador de carga|AF||0||Perfecto estado.
+Piso 2A evacuación sótano 2 #2|Elevador de carga|Y||1|v|Válvulas de bola de ambos manómetros para cambio; sin palanca ni tuercas.
+Piso 2A evacuación sótano 2 #1|Elevador de carga|Z||0||Buenas condiciones.
+Piso 1A evacuación sótano 2 #1|Elevador de carga|R||0||Perfecto estado.
+Piso 1A evacuación sótano 2 #2|Elevador de carga|S||0||Perfecto estado.
+Sótano 2 · Parqueadero motos|Parqueadero motos|AA||1|mds|Manómetro sin tapón de glicerina; drenaje inhabilitado o desconectado; reparar señalización.
+Salida 1 · Sótano 2 · Piso 2|Parqueadero motos|||1|v|Buen estado en la mayoría de componentes. Cambio de válvula de bola por faltante de palanca.
+Salida 8 · Sótano 1|Salida 8|L||0||Alimenta el anillo cercano a la taquilla de pago. Perfecto estado.
+Salida 8 · Piso 1|Salida 8|T||0||Perfectas condiciones.
+Salida 8 · Piso 2|Salida 8|AA||0||Perfectas condiciones.
+Salida 8 · Piso 3|Salida 8|AG||0||Perfectas condiciones.
+Salida 8 · Sótano 2|Salida 8|E||0||Alimenta el anillo cercano a la zona de reciclaje.
+Salida 11 · Piso 4 (módulo H, escalera sur)|Salida 11|AJ||0||Perfectas condiciones y buena señalización.
+Pasillo hipermercado Éxito|Éxito zona exterior|H||1|v|Cuarto elevado junto al Éxito; cubre sus locales internos. Dos válvulas de bola para cambio.
+Salida 1 · Piso 2|Éxito zona exterior|W||1|v|Cambio de válvula de bola.
+Salida 2 · Piso 2A|Éxito zona exterior|X||0||Perfecto estado.
+Salida 5 · Piso 2 · Módulo E|Home Center|||1|s|Perfecto estado; falta señalización y tablas de especificaciones.
+Salida 5 · Piso 1 · Módulo E (válvula 405)|Home Center|||1|s|Perfecto estado; pendiente señalización y tablas de especificaciones.
+Salida 5 · Piso 3 · Módulo E|Home Center|AE||0||Perfecto estado.
+Piso 2 parqueadero lado regional · Módulo H|Home Center|||1|s|Buen estado; falta señalización y área que protege.
+Cuarto de bombas|Home Center|||0||Buen estado en todos sus elementos.
+Salida 13 · Sótano 1|Salida 13|K||0||Zona de escaleras de emergencia; perfectas condiciones.
+Salida 13 · Sótano 2|Salida 13|D||0||Zona de escaleras de emergencia; todos sus elementos en perfectas condiciones.
+Grupo Éxito · Piso 7|Grupo Éxito|||1|ms|Junto a salida de emergencia, en compuerta sin señalización. Un manómetro para cambio por descalibración.
+Grupo Éxito · Piso 5|Grupo Éxito|||0||Sistema monitoreado, componentes funcionales.
+Grupo Éxito · Piso 4|Grupo Éxito|||0||Sistema monitoreado, componentes funcionales.
+Grupo Éxito · Piso 3|Grupo Éxito|||0||Sistema monitoreado, componentes funcionales.
+Grupo Éxito · Piso 2|Grupo Éxito|||1|m|Un manómetro se queda pegado al cerrar la válvula.
+Grupo Éxito · Piso 1|Grupo Éxito|||1|mv|Manómetro pegado al cerrar la válvula y válvula de bola para cambio.
+Grupo Éxito · Parqueadero 1 · Sótano 1|Grupo Éxito|N||1|m|Manómetros pegados que no marcan cambio de presión; resto perfecto. Alimenta zona de bicicletas y anillo de entrada de vehículos naranja.
+Grupo Éxito · Parqueadero 2 · Sótano 2|Grupo Éxito|F||0||Monitoreado por Grupo Éxito; alimenta sótano 2 zona cuarto de bombas (fuera de su red).
+Edificio corporativo · Piso 11|Edificio corporativo|||1|s|Junto a salida 11, en pequeña compuerta; perfecto estado y válvula monitoreada. Falta señalización.
+Edificio corporativo · Piso 10|Edificio corporativo|||0||Dentro de Sura, junto a salida 11; perfecto estado, válvula monitoreada.
+Edificio corporativo · Piso 9|Edificio corporativo|||0||En Colombo Americano, junto a salida 11; sin detalles.
+Edificio corporativo · Piso 8|Edificio corporativo|||1|dv|Válvula de drenaje sin volante y válvula de alivio encontrada cerrada.
+Sótano 2 · Locatel|Edificio corporativo|||1|vods|Bypass con sus 4 válvulas sin monitoreo y sin drenaje; válvula de alivio dañada y cerrada para evitar pérdidas. Presión de trabajo 200 psi. Pendiente: señalización, ficha técnica y zonas de cobertura; conectar drenaje y reparar válvula de alivio.
+Salida 2 · Sótano 2|Edificio corporativo|C||0||Salida de emergencia del cafetín, piso inferior; completo y supervisado. Alimenta parqueadero de motos zona regional.
+Sótano 1 · Camand & Monitoreo|Edificio corporativo|||1|od|Techo del baño de hombres de la oficina; se alimenta del riser de 4″ de sótano 1 y comparte alimentación con una toma de bomberos junto a administración. Válvula no monitoreada y drenaje desconocido.
+Piso 1A · IKEA|Edificio corporativo|AN||0||Parqueadero de motos zona IKEA; completo, sin fallos ni reportes.
+Piso 1A · Zona N2 Norte|Edificio corporativo|||0||Zona gimnasio Action; perfecto estado.`;
+const G=`#1|Sótano 1 · Zona verde / Zona Locatel|||1|h|Dotación completa; gabinete y acrílico en buen estado. Conectado a válvula aliviadora calibrada a 50 psi. El reporte base indicó manguera con leve deterioro: verificar en sitio.
+#16|Sótano 1 · Zona naranja / Reciclaje electrónico|||2|h|Completo y en buen estado; se corrigieron anclajes. Cambio de manguera ejecutado (tamaño excesivo, NFPA 14): se intercambió con una del gabinete de Pasillo H.
+#17|Sótano 1 · Zona morada / Zona de pago de parqueadero|||1|xg|Equipamiento completo; levemente golpeado. Pendiente: extintor vencido. Recomendado: protección antigolpes.
+#18|Sótano 1 · Zona verde|||1|ag|Dotación completa; gabinete golpeado. Pendiente: cambio de acrílico.
+#24|Sótano 1 · Zona azul / Bahía de taxis|||1|v|Dotación completa y funcional. Se corrigieron soportes del acrílico y se hizo prueba de presión. Pendiente: válvula angular de 2½″ con leve goteo en el volante al abrir.
+#29|Sótano 1 · Zona amarilla / Parqueadero de motos|||1|xahg|Dotación completa; manguera con leve deterioro pero funcional; gabinete fuertemente golpeado. Pendiente: extintor vencido y cambio de acrílico fisurado (66 × 59 cm). Recomendado: protección antigolpes.
+#30|Sótano 1 · Torre Sur, zona amarilla / Lavadero de carros|||1|xc|Dotación completa y en buen estado; se organizaron manguera y soportes del acrílico. Pendiente: extintor vencido y sin chapa de seguridad.
+#2|Sótano 1 · Grupo Éxito|||1|vt|Dotación completa; extintor vence en octubre. Pendiente: válvula angular corroída por falta de regulación de presión (golpe de presión).
+#9|Sótano 1 · Zona Regional|||0|t|Dotación completa; extintor vence en octubre.
+#20|Sótano 2 · Zona verde, cerca de escaleras eléctricas|||1|h|Dotación completa; manguera con leve deterioro pero operativa. Se corrigieron anclajes del acrílico y la chapa que no sostenía la puerta.
+#21|Sótano 2 · Zona M3, rampas eléctricas|||2||Equipamiento y elementos internos en buen estado. Se corrigieron anclajes del acrílico y posición de la manguera.
+#22|Sótano 2 · Zona azul motos|||1|hg|Equipamiento en buen estado; manguera con leve deterioro de color pero funcional; levemente golpeado. Anclajes del acrílico corregidos. Recomendado: protección antigolpes.
+#23|Sótano 2 · Zona morada|||1|gz|Dotación completa y en buen estado; gabinete golpeado o levemente impactado. Se corrigió la posición de la manguera. Pendiente: extintor de tamaño excesivo. Recomendado: protección antigolpes.
+#31|Sótano 2 · Zona amarilla / Salida vehicular regional|||1|e|Gabinete en perfecto estado. Pendiente: dotación incompleta (sin extintor).
+#32|Sótano 2 · Zona amarilla / Parqueadero de motos|||1|xc|Gabinete y dotación en buen estado. Pendiente: extintor vencido y chapa.
+#1|Sótano 2 · Grupo Éxito|||1|vt|Dotación completa; extintor vence en octubre. Pendiente: válvula angular no regulada.
+#14|Piso 1 · Hall de ascensores, diagonal a Adidas|||1|ec|Buen estado estético; se corrigió anclaje y posición del acrílico. Pendiente: sin extintor; la canastilla choca con la manguera (reperforar).
+#15|Piso 1 · Entrada cerca de Éxito|||1|a|Equipamiento completo y en buen estado. Pendiente: leve fisura en el acrílico.
+#27|Piso 1 · Parqueadero Torre Sur IKEA, zona amarilla|||1|xv|Dotación completa; anclajes del acrílico reorganizados. Pendiente: extintor vencido y válvula angular regulada de 1½″ sin seguro de calibración.
+#28|Piso 1 · Parqueadero de motos Torre Sur IKEA / Zona común|||1|xg|Equipamiento completo; leve golpe. Se reorganizaron anclajes, se recortó el acrílico (era muy grande) y se lubricaron bisagras pegadas. Pendiente: extintor vencido.
+#25|Piso 1A · Parqueadero de motos|||1|xivh|Se instaló y limpió el acrílico (estaba suelto y quebrado). Pendiente: falta hacha, extintor vencido y goteo en válvula angular de 1½″ que manchó la manguera y generó hongo (cambio de manguera).
+#26|Piso 1A · Zona norte parqueadero|||1|x|Equipamiento completo. Se ajustaron tornillos de canasta, soportes del acrílico y se calibró la válvula regulada de 1½″. Pendiente: extintor vencido.
+#12|Piso 2 · Hall de ascensores, frente a Claro|||1|e|Estado físico y estético perfecto. Pendiente: sin extintor.
+#13|Piso 2 · Zona Miniso|||1|e|Se corrigió anclaje de canasta y acrílico; se lubricó y organizó la chapa. Pendiente: sin extintor.
+#11|Piso 3 · Hall de ascensores, zona Mundo Verde|||1|e|Perfectas condiciones; se organizaron manguera y anclajes del acrílico. Pendiente: sin extintor.
+#13|Piso 3 · Zona común|||1|e|Acrílico con ajustes leves. Pendiente: sin extintor.
+04SM|Piso 4 · Junto a Smartfit|||1|ik|Estado físico bueno (antes levemente opaco). Pendiente: dotación incompleta (falta hacha y/o extintor según reporte previo). Verificar en sitio.
+04CB|Cubierta · Piso 4 / Azotea|||1|evs|Restauración completa de pintura. Pendiente: extintor, válvula angular de 1½″ y señalización.
+Happy City Terraza|Cubierta · Terraza Happy City|||1|x|Se limpió y lubricó por leve óxido. Pendiente: extintor vencido.
+CB01|Cubierta · Piso 11 / Azotea|||1|eas|Retoque de pintura y organización interna. Pendiente: sin extintor, acrílico deteriorado por exposición y mejorar señalización.
+CB02|Cubierta · Piso 11 / Azotea|||1|eais|Retoque de pintura, organización interna y reparación de puerta despegada. Pendiente: sin extintor, falta llave spanner, acrílico deteriorado y mejorar señalización.
+01H|Pasillo H|||1|eai|Limpieza, lubricación y válvulas en perfecto estado. Tenía 2 mangueras (una pasó al #16). Pendiente: sin acrílico (84,5 × 63 cm), sin boquilla de presión y sin extintor.
+#7|Piso 5 · Grupo Éxito|||1|hc|Extintor externo y dotación completa, pero manguera de tamaño excesivo (NFPA 14). Pendiente: reforzar anclaje (se mueve con facilidad) y cambiar manguera. La nota base cita este intercambio también en el #5.
+#6|Piso 4 · Grupo Éxito|||0|t|Dotación completa y en perfecto estado. Extintor vence en octubre.
+#5|Piso 3 · Grupo Éxito|||0|t|Dotación completa y en perfecto estado. Extintor vence en octubre.
+#4|Piso 2 · Grupo Éxito|||0|t|Dotación completa y en perfecto estado. Extintor vence en octubre.
+#3|Piso 1 · Grupo Éxito|||2|t|Dotación completa; se organizó y reinstaló la manguera que estaba invertida. Extintor vence en octubre.
+#8|Piso 5 · Zona Regional|||1|vt|Dotación completa; extintor vence en octubre. Pendiente: reemplazar válvula angular de 2½″ por leve paso de agua y sulfatación interna.
+#9|Piso 4 · Zona Regional|||2|t|Dotación completa y manguera organizada; extintor vence en octubre.
+#10|Piso 3 · Zona Regional|||0|t|Dotación completa; extintor vence en octubre.
+#11|Piso 2 · Zona Regional|||0|t|Dotación completa; extintor vence en octubre.
+#12|Piso 1 · Zona Regional|||1|vt|Dotación completa; extintor vence en octubre. Pendiente: cambiar válvula angular de 2½″ (muy deteriorada, leve paso de agua). Zona Regional: programar prueba de válvulas para certificación de bomberos e instalar drenajes y manómetros en vástagos.
+#6|Piso 11 · Salida 10, Torre de oficinas (Tipo III)|||2||Dotación completa y perfecto estado; soportes del acrílico corregidos. Ya cuenta con extintor (antes figuraba sin él).
+#7|Piso 10 · Salida 10, Torre de oficinas (Tipo III)|||2||Dotación completa y válvulas en buen estado; anclajes del acrílico corregidos. Válvula angular de 2½″ con tapa.
+#8|Piso 9 · Salida 10, Torre de oficinas (Tipo III)|||2||Dotación completa y válvulas en buen estado; anclajes del acrílico corregidos.
+#9|Piso 8 · Salida 10, Torre de oficinas (Tipo III)|||1|i|Válvulas en buen estado; anclajes del acrílico corregidos. Pendiente: dotación incompleta (falta llave spanner).
+#10|Piso 7 · Salida 10, Torre de oficinas (Tipo III)|||2||Dotación completa y válvulas en buen estado; anclajes del acrílico corregidos.
+#1|Piso 11 · Evacuación sótano 2, Zona Vegas (Tipo III)|||1|k|Dotación completa y operativa. En el reporte base figuraba pendiente de extintor: verificar en sitio.
+#2|Piso 10 · Evacuación sótano 2, Zona Vegas (Tipo III)|||1|k|Dotación completa y operativa. En el reporte base figuraba pendiente de extintor: verificar en sitio.
+#3|Piso 9 · Evacuación sótano 2, Zona Vegas (Tipo III)|||0||Dotación completa, operativa y con extintor.
+#4|Piso 8 · Evacuación sótano 2, Zona Vegas (Tipo III)|||1|k|Dotación completa y operativa. En el reporte base figuraba pendiente de extintor: verificar en sitio.
+#5|Piso 7 · Evacuación sótano 2, Zona Vegas (Tipo III)|||1|ck|Dotación completa y operativa. Pendiente: chapa para cambio. Verificar extintor en sitio.`;
+const TG={r:{m:'Manómetro',v:'Válvula',s:'Señalización',d:'Drenaje',o:'Sin monitoreo',p:'Presión anómala'},g:{e:'Sin extintor',x:'Extintor vencido',t:'Extintor vence en octubre',a:'Acrílico',h:'Manguera',v:'Válvula angular',g:'Golpe o antigolpes',c:'Chapa o anclaje',z:'Extintor sobredimensionado',k:'Verificar en sitio',s:'Señalización',i:'Dotación incompleta'}};
+const parse=(raw,p)=>raw.trim().split('\n').map((l,i)=>{const[n,g,s,d,st,t,o]=l.split('|');return{id:p+String(i+1).padStart(2,'0'),n:n.trim(),g,s:s||'',d:(d||'').trim(),st:+st,t:[...(t||'')],o}});
+const D={r:parse(R,'R'),g:parse(G,'G')};
+const SN=['Operativo','Con novedad','Corregido'],SV=['--ok','--nv','--co'];
+let C='r',F='all',T=null,Q='',S=false,LV=null;
+const $=i=>document.getElementById(i),pad=n=>String(n).padStart(2,'0');
+const lv=x=>{const m=(x.g+' '+x.n).match(/Cubierta|Sótano \d|Piso \d+[AB]?|Nivel 0/i);return m?m[0].replace(/^./,c=>c.toUpperCase()):'Sin nivel definido'};
+const lk=l=>{let m=l.match(/Sótano (\d)/);if(m)return-m[1];m=l.match(/Piso (\d+)([AB]?)/);if(m)return+m[1]+(m[2]=='A'?.3:m[2]=='B'?.6:0);return l=='Nivel 0'?0:l=='Cubierta'?100:101};
+const hay=x=>(x.id+' '+x.n+' '+x.g+' '+x.s+' '+x.o).toLowerCase();
+function match(x,q){if(!q)return true;q=q.replace(/^sistema\s+/,'');if(C=='r'){if(D.r.some(y=>y.s.toLowerCase()==q))return x.s.toLowerCase()==q;const m=q.match(/^r0*(\d+)$/);if(m)return x.id==='R'+pad(m[1])}if(/^\d+$/.test(q))return(C=='r'&&x.id.slice(1)==pad(q))||new RegExp('(^|\\D)'+q+'(\\D|$)').test(x.n);return hay(x).includes(q)}
+const col=s=>`var(${SV[s]})`;
+function sc(x){return x.st==0?0:x.st}
+function chips(x){return x.t.length?`<div class="tg">${x.t.map(k=>`<span class="${k=='t'&&C=='g'?'t':''}">${TG[C][k]}</span>`).join('')}</div>`:''}
+function render(){
+ const A=D[C];$('q').placeholder=C=='r'?'Sistema (ej. X o AM), código (ej. R12), piso o zona…':'Número (ej. 13), piso o zona…';$('cr').textContent=D.r.length;$('cg').textContent=D.g.length;
+ const n=[0,1,2].map(s=>A.filter(x=>x.st==s).length);
+ $('sts').innerHTML=[['Total',A.length,'--ac'],['Operativos',n[0],'--ok'],['Con novedad',n[1],'--nv'],['Corregidos',n[2],'--co']].map(([a,b,c])=>`<div class="stat" style="--c:var(${c})"><b>${b}</b><span>${a} · ${C=='r'?'risers':'gabinetes'}</span></div>`).join('');
+ $('fl').innerHTML=[['all','Todos'],[1,'Con novedad'],[0,'Operativos'],[2,'Corregidos']].map(([k,l])=>`<button class="chip ${F==k?'on':''}" data-f="${k}">${l}</button>`).join('')+(C=='r'?`<button class="chip ${S?'on':''}" data-s="1">Sin letra de sistema (${A.filter(x=>!x.s).length})</button>`:'');
+ const lc={};A.forEach(x=>{const l=lv(x);lc[l]=(lc[l]||0)+1});
+ $('lv').innerHTML='<h3>Por ubicación <span style="color:var(--mu);font-weight:400">(toca un nivel para filtrar)</span></h3><div class="chips" style="margin:0">'+Object.keys(lc).sort((a,b)=>lk(a)-lk(b)).map(l=>`<button class="chip ${LV==l?'on':''}" data-l="${l}">${l} · ${lc[l]}</button>`).join('')+'</div>';
+ const cnt={};A.forEach(x=>x.t.forEach(k=>cnt[k]=(cnt[k]||0)+1));
+ const ks=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]),mx=Math.max(1,...Object.values(cnt));
+ $('dm').innerHTML=`<h3>Errores y daños reportados <span style="color:var(--mu);font-weight:400">(toca para filtrar)</span></h3>`+ks.map(k=>`<button class="bar ${T==k?'on':''}" data-t="${k}"><span>${TG[C][k]}</span><i style="width:${cnt[k]/mx*100}%"></i><span>${cnt[k]}</span></button>`).join('');
+ const L=A.filter(x=>(F=='all'||x.st==F)&&(!T||x.t.includes(T))&&(!S||!x.s)&&(!LV||lv(x)==LV)&&match(x,Q));
+ $('ct').textContent=`${L.length} de ${A.length} ${C=='r'?'risers':'gabinetes'}`;
+ $('ls').innerHTML=L.length?L.map(x=>`<button class="card" style="--c:${col(x.st)}" data-i="${x.id}"><div class="top"><h4>${C=='g'&&x.n[0]=='#'?'Gabinete ':''}${x.n}</h4><span class="id">${x.s?'Sistema '+x.s+' · '+x.id:x.id}</span></div><p>${x.g}${x.d?' · '+x.d:''} · <span class="st" style="--c:${col(x.st)}">${SN[x.st]}</span></p>${chips(x)}</button>`).join(''):'<div class="emp">Sin resultados. Prueba con otro número o quita los filtros.</div>';
+}
+function open(id){const x=D[C].find(y=>y.id==id);if(!x)return;
+ $('dl').innerHTML=`<div class="top"><h3 style="margin:0">${C=='g'&&x.n[0]=='#'?'Gabinete ':''}${x.n}</h3><span class="id">${x.id}</span></div><div class="st" style="--c:${col(x.st)};margin-top:6px">● ${SN[x.st]}</div><dl><dt>Nivel</dt><dd>${lv(x)}</dd><dt>Ubicación</dt><dd>${x.g}</dd>${x.s?`<dt>Sistema</dt><dd>${x.s}</dd>`:''}${x.d?`<dt>Revisión</dt><dd>${x.d}</dd>`:''}<dt>Reporte</dt><dd>${x.o}</dd></dl>${chips(x)}<button class="x" onclick="$('dl').close()">Cerrar</button>`;
+ $('dl').showModal()}
+function sug(){const q=Q;const b=$('sg');if(!q){b.hidden=true;return}
+ const L=D[C].filter(x=>match(x,q)).slice(0,7);
+ b.innerHTML=L.map(x=>`<button data-i="${x.id}"><span class="id">${x.s?x.s:x.id}</span><span>${C=='g'&&x.n[0]=='#'?'Gabinete ':''}${x.n}<small>${x.g}</small></span></button>`).join('');
+ b.hidden=!L.length}
+$('q').addEventListener('input',e=>{Q=e.target.value.trim().toLowerCase();render();sug()});
+$('q').addEventListener('keydown',e=>{if(e.key=='Enter'||e.key=='Escape')$('sg').hidden=true});
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b){$('sg').hidden=true;return}
+ if(b.dataset.c){C=b.dataset.c;F='all';T=null;Q='';S=false;LV=null;$('q').value='';document.querySelectorAll('.tabs button').forEach(t=>t.classList.toggle('on',t==b));$('sg').hidden=true;render()}
+ else if(b.dataset.f!==undefined){F=b.dataset.f=='all'?'all':+b.dataset.f;render()}
+ else if(b.dataset.l!==undefined){LV=LV==b.dataset.l?null:b.dataset.l;render()}
+ else if(b.dataset.s){S=!S;render()}
+ else if(b.dataset.t){T=T==b.dataset.t?null:b.dataset.t;render()}
+ else if(b.dataset.i){$('sg').hidden=true;open(b.dataset.i)}
+ else if(!b.closest('.sb'))$('sg').hidden=true});
+$('th').onclick=()=>{const r=document.documentElement,d=r.dataset.theme=='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme:dark)').matches);r.dataset.theme=d?'light':'dark';try{localStorage.setItem('sc-theme',r.dataset.theme)}catch(e){}};
+try{const t=localStorage.getItem('sc-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}
+$('lg').onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
+render();
+</script></body></html>
